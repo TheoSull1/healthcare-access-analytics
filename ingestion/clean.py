@@ -1,4 +1,5 @@
 import pandas as pd
+from sqlalchemy import create_engine
 
 # The file path of the raw CMS data
 file_path = 'data/raw/Medicare_IP_Hospitals_by_Provider_and_Service_2023.csv'
@@ -71,3 +72,8 @@ print(df[flag_cols].value_counts())
 # print(df[df['flag_tot_pymnt_gt_mdcr_pymnt'] == False][['org_name', 'drg_desc', 'tot_dschrgs', 'avg_submtd_chrg', 'avg_tot_pymnt', 'avg_mdcr_pymt']])
 
 print("Final cleaned shape:", df.shape)
+
+# preparing to load data in to SQL db
+engine = create_engine('sqlite:///data/cms_inpatient.db')
+df.to_sql('inpatient_claims', engine, if_exists='replace')
+print('Data loaded into SQL!')
