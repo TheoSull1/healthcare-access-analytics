@@ -34,6 +34,9 @@ df = df.dropna(subset=['ruca', 'ruca_desc'])
 df = df[df['ruca_desc'] != 'Unknown']
 # print(df.shape)
 
+# adding a column to express the year of the data
+df['year'] = 2023
+
 # Changing data types of fips, zip5, provider ccn, and drg codes. These are dimensions, not measures.
 df['state_fips'] = df['state_fips'].astype(str)
 df['zip5'] = df['zip5'].astype(str)
@@ -74,6 +77,6 @@ print(df[flag_cols].value_counts())
 print("Final cleaned shape:", df.shape)
 
 # preparing to load data in to SQL db
-engine = create_engine('sqlite:///data/cms_inpatient.db')
-df.to_sql('inpatient_claims', engine, if_exists='replace')
+engine = create_engine('sqlite:///data/cms_inpatient.db') 
+df.to_sql('inpatient_claims', engine, if_exists='replace') # syntax: table name, engine or path, and if the table exisit how to handle the new data.
 print('Data loaded into SQL!')
